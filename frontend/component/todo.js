@@ -16,7 +16,11 @@ export default class Todo extends React.Component {
   render() {
     let item = this.props.item.val();
     return (
-        <li>{item.title} {item.body}
+        <li className="mdl-list__item mdl-list__item--two-line">
+          <span className="mdl-list__item-primary-content">
+            <span>{item.title}</span>
+            <span className="mdl-list__item-sub-title">{item.body}</span>
+          </span>
           <span style={{ color: 'red', marginLeft: '10px', cursor: 'pointer' }} onClick={this.click}>X</span>
         </li>
     );

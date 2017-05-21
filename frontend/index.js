@@ -24,6 +24,7 @@ class TodoList extends React.Component {
       inputTitle: "",
       inputBdy: ""
     };
+
   }
 
   componentWillMount() {
@@ -112,7 +113,9 @@ class TodoList extends React.Component {
     return (
       <div>
         <hr/>{ form }<hr/>
-        <ol>{ list }</ol>
+        <ol className="mdl-list">
+          { list }
+        </ol>
         <div><input type="button" value="sort" onClick={this.handleSortClick}/></div>
       </div>
     )
@@ -121,3 +124,4 @@ class TodoList extends React.Component {
 }
 
 ReactDOM.render(<TodoList />, document.getElementById('root'));
+

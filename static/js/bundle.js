@@ -26770,10 +26770,21 @@ var Todo = function (_React$Component) {
       var item = this.props.item.val();
       return _react2.default.createElement(
         'li',
-        null,
-        item.title,
-        ' ',
-        item.body,
+        { className: 'mdl-list__item mdl-list__item--two-line' },
+        _react2.default.createElement(
+          'span',
+          { className: 'mdl-list__item-primary-content' },
+          _react2.default.createElement(
+            'span',
+            null,
+            item.title
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'mdl-list__item-sub-title' },
+            item.body
+          )
+        ),
         _react2.default.createElement(
           'span',
           { style: { color: 'red', marginLeft: '10px', cursor: 'pointer' }, onClick: this.click },
@@ -26895,6 +26906,7 @@ var TodoList = function (_React$Component) {
       inputTitle: "",
       inputBdy: ""
     };
+
     return _this;
   }
 
@@ -27006,7 +27018,7 @@ var TodoList = function (_React$Component) {
         _react2.default.createElement('hr', null),
         _react2.default.createElement(
           'ol',
-          null,
+          { className: 'mdl-list' },
           list
         ),
         _react2.default.createElement(
