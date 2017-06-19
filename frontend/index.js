@@ -29,6 +29,17 @@ class TodoList extends React.Component {
 
   componentWillMount() {
     this.databaseOnBind();
+
+    var query = database.orderByKey()
+    query.once("value").then(function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var key = childSnapshot.key;
+        var childData = childSnapshot.val();
+        console.log(childData);
+        console.log(key);
+      });
+    });
+
   }
 
   componentWillUnmount() {
@@ -36,7 +47,7 @@ class TodoList extends React.Component {
   }
 
   databaseOnBind() {
-    database.orderByChild("title").on("child_added", (snapshot) => {
+    database.startAt().on("child_added", (snapshot) => {
       let items = this.state.items;
       items.push(snapshot);
       this.setState({
@@ -54,12 +65,10 @@ class TodoList extends React.Component {
 
     database.on("child_moved", (childSnapshot, prevChildKey) => {
       console.log("child_moved");
-
     }).bind(this);
 
     database.on("child_changed", (childSnapshot) => {
       console.log("child_changed");
-
     }).bind(this);
   }
 
@@ -79,7 +88,7 @@ class TodoList extends React.Component {
   }
 
   pushItem(title, body) {
-    database.push({title: title, body: body})
+    database.push({title: title, body: body, date: new Date().getTime()})
   }
 
   removeItem(key) {

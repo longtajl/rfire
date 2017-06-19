@@ -7,5 +7,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(3000, () => {
-  console.log('Example app listening on Port 3000!');
+  console.log(' Sample rfire app listening on Port 3000!');
 })
