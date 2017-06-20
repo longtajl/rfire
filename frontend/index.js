@@ -98,13 +98,14 @@ class TodoList extends React.Component {
 
   render() {
     let form = (
-        <div>
+        <div className="Contribute">
           <form className="" onSubmit={this.handleSubmit}>
             <input name="title" type="text" size="30" onChange={this.onChangeInputTitle}></input>
             <input name="body" type="text" size="60" onChange={this.onChangeInputBody}></input>
             <input type="submit" value="submit"></input>
           </form>  
-        </div>)
+        </div>
+    )
 
     let list = _.map(this.state.items, (i) => {
       return <Todo item={i} remove={this.removeItem} key={i.key} />;
@@ -112,7 +113,7 @@ class TodoList extends React.Component {
 
     return (
       <div>
-        <hr/>{ form }<hr/>
+        { form }
         <ol className="mdl-list">
           { list }
         </ol>
@@ -123,5 +124,5 @@ class TodoList extends React.Component {
 
 }
 
-ReactDOM.render(<TodoList />, document.getElementById('root'));
+ReactDOM.render(<TodoList />, document.getElementById('content'));
 
