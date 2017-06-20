@@ -4,11 +4,14 @@ html(lang="ja")
     meta(charset="utf-8")
     title テスト
     link(href='/static/css/material.min.css', rel='stylesheet')
+    link(href='/static/css/common.css', rel='stylesheet')
   body
-    h1.sitettl TodoList on React Firebase
     main.main
-      div(id='root').div
-      div(class='container').div
+      div(id='root')
+        #main
+          #header
+            h1.sitettl TodoList on React Firebase
+          #content
 
-  script(type='text/javascript', src='/static/js/bundle.js')
+  script(type='text/javascript', src='/static/js/build.js')
 

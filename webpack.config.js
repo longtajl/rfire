@@ -1,11 +1,14 @@
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path')
 
-module.exports = {
-  entry: './frontend/index.js',
+module.exports = [{
+  entry: {
+      bundle: './frontend/index.js',
+  },
   output: {
-      filename: 'js/bundle.js',
-      path: path.resolve(__dirname, 'static')
+      filename: 'build.js',
+      path: path.resolve(__dirname, 'static/js')
   },
   module: {
       loaders: [
@@ -17,21 +20,32 @@ module.exports = {
                   cacheDirectory: true,
                   presets: ['react', 'es2015']
               }
-          },
-          { 
-              test: /\.css$/, loader: "./frontend/style.css" 
-          },
-          {
-              test: /\.sass$/,
-              loaders: ["style", "css", "sass"]
           }
       ]
   },
   plugins: [
-      new CopyWebpackPlugin([
-          { from: 'node_modules/material-design-lite/material.min.css', to: 'css/material.min.css' },
-          { from: 'node_modules/material-design-lite/material.min.js', to: 'js/material.min.js' }
-      ])
+    new CopyWebpackPlugin([
+        { from: 'node_modules/material-design-lite/material.min.js', to: 'material.min.js' } ])
   ]
-}
-
+},{
+    entry: {
+        common: './frontend/scss/common.scss'
+    },
+    output: {
+      filename: '[name].css',
+      path: path.resolve(__dirname, 'static/css/')
+    },
+    module: {
+        loaders: [
+          { 
+            test: /\.scss$/,
+            loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' })
+          }
+        ]
+    },
+    plugins: [
+      new ExtractTextPlugin('[name].css'),
+      new CopyWebpackPlugin([
+          { from: 'node_modules/material-design-lite/material.min.css', to: 'material.min.css' } ])
+    ]
+}]
