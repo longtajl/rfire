@@ -5,23 +5,22 @@ import firebase from 'firebase';
 import { firebaseConfig } from './firebase/config.js';
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-const database = firebaseApp.database().ref("/items")
+const database = firebaseApp.database().ref("/rooms/three")
 
-import Todo from './component/todo.js'
+import Item from './component/item.js'
 
 class TodoList extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.onChangeInputTitle = this.onChangeInputTitle.bind(this);
+    this.onChangeInputName = this.onChangeInputName.bind(this);
     this.onChangeInputBody = this.onChangeInputBody.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSortClick = this.handleSortClick.bind(this);
 
     this.state = { 
       items: [],
-      inputTitle: "",
+      inputName: "",
       inputBdy: ""
     };
 
@@ -29,17 +28,6 @@ class TodoList extends React.Component {
 
   componentWillMount() {
     this.databaseOnBind();
-
-    var query = database.orderByKey()
-    query.once("value").then(function(snapshot) {
-      snapshot.forEach(function(childSnapshot) {
-        var key = childSnapshot.key;
-        var childData = childSnapshot.val();
-        console.log(childData);
-        console.log(key);
-      });
-    });
-
   }
 
   componentWillUnmount() {
@@ -49,7 +37,7 @@ class TodoList extends React.Component {
   databaseOnBind() {
     database.startAt().on("child_added", (snapshot) => {
       let items = this.state.items;
-      items.push(snapshot);
+      items.unshift(snapshot);
       this.setState({
         items: items
       });
@@ -75,20 +63,21 @@ class TodoList extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    let title = this.state.inputTitle;
+    let name = this.state.inputName;
     let body = this.state.inputBody;
-    if (title.trim().length !== 0 && body.trim().length !== 0) {
-      this.pushItem(title, body);
+
+    if (name.trim().length !== 0 && body.trim().length !== 0) {
+      this.pushItem(name, body);
     }
 
   }
 
-  handleSortClick(e) {
-    console.log("------------------- handleSortClick");
-  }
-
-  pushItem(title, body) {
-    database.push({title: title, body: body, date: new Date().getTime()})
+  pushItem(name, body) {
+    database.push({
+      name: name, 
+      body: body, 
+      date: new Date().getTime()
+    })
   }
 
   removeItem(key) {
@@ -97,8 +86,8 @@ class TodoList extends React.Component {
     }
   }
 
-  onChangeInputTitle(e) {
-    this.setState({inputTitle: e.target.value});
+  onChangeInputName(e) {
+    this.setState({inputName: e.target.value});
   }
 
   onChangeInputBody(e) {
@@ -107,26 +96,38 @@ class TodoList extends React.Component {
 
   render() {
     let form = (
-        <div className="Contribute">
-          <form className="" onSubmit={this.handleSubmit}>
-            <input name="title" type="text" size="30" onChange={this.onChangeInputTitle}></input>
-            <input name="body" type="text" size="60" onChange={this.onChangeInputBody}></input>
-            <input type="submit" value="submit"></input>
-          </form>  
+        <div className="Form">
+          <form onSubmit={this.handleSubmit}>
+            <div className="FormField mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input className="mdl-textfield__input" type="text" id="NameText" onChange={this.onChangeInputName} />
+              <label className="mdl-textfield__label" htmlFor="NameText">Name...</label>
+            </div>
+            <div className="FormField mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <textarea className="mdl-textfield__input" id="NameBody" onChange={this.onChangeInputBody} rows="6" />
+              <label className="mdl-textfield__label" htmlFor="NameBody">Body...</label>
+            </div>
+            <input className="FormButton mdl-button mdl-js-button mdl-button--raised" type="submit" value=" save "></input>
+          </form>
         </div>
     )
 
     let list = _.map(this.state.items, (i) => {
-      return <Todo item={i} remove={this.removeItem} key={i.key} />;
+      return <Item item={i} remove={this.removeItem} key={i.key} />;
     });
 
     return (
       <div>
         { form }
-        <ol className="mdl-list">
-          { list }
-        </ol>
-        <div><input type="button" value="sort" onClick={this.handleSortClick}/></div>
+
+        <div className="Snippet-captions">
+          <div className="Snippet-caption">Simple list</div>
+        </div>
+
+        <div className="List">
+          <ol className="mdl-list">
+            { list }
+          </ol>
+        </div>
       </div>
     )
   }
