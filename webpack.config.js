@@ -39,13 +39,18 @@ module.exports = [{
         loaders: [
           { 
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' })
+            loader: ExtractTextPlugin.extract({ 
+              fallback: 'style-loader', 
+              use: [ { loader : 'css-loader' }, { loader : 'sass-loader' }]
+            })
           }
         ]
     },
     plugins: [
       new ExtractTextPlugin('[name].css'),
       new CopyWebpackPlugin([
-          { from: 'node_modules/material-design-lite/material.min.css', to: 'material.min.css' } ])
+          { from: 'node_modules/material-design-lite/material.min.css', to: 'material.min.css' },
+          { from: 'node_modules/normalize.css/normalize.css', to: 'normalize.css' }
+      ])
     ]
 }]

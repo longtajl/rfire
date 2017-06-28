@@ -2,16 +2,18 @@ doctype html
 html(lang="ja")
   head
     meta(charset="utf-8")
-    title テスト
+    title TodoList on React Firebase
+    link(href='/static/css/normalize.css', rel='stylesheet')
     link(href='/static/css/material.min.css', rel='stylesheet')
     link(href='/static/css/common.css', rel='stylesheet')
   body
+    header
+      .title Simple Chat on React Firebase
     main.main
       div(id='root')
         #main
-          #header
-            h1.sitettl TodoList on React Firebase
           #content
 
+  script(type='text/javascript', src='/static/js/material.min.js')
   script(type='text/javascript', src='/static/js/build.js')
 
