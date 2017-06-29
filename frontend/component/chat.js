@@ -12,7 +12,6 @@ export default class Chat extends React.Component {
     super(props);
 
     let url = props.match.params.url;
-    console.log(url);
 
     this.database = FirebaseApp.database().ref("/topics/chat/" + url)
 
@@ -122,7 +121,7 @@ export default class Chat extends React.Component {
         { form }
 
         <div className="Snippet-captions">
-          <div className="Snippet-caption">Simple list</div>
+          <div className="Snippet-caption"></div>
         </div>
 
         <div className="List">

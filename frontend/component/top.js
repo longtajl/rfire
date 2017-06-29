@@ -95,19 +95,22 @@ export default class Top extends React.Component {
 
     let list = _.map(this.state.topics, (i) => {
        return (
-             <tr>
-                 <td className="mdl-data-table__cell--non-numeric">{ i.val().title }</td>
-                 <td><Link to={"/chat/" + i.val().url}>{ i.val().url }</Link></td>
-             </tr>
+             <li className="mdl-list__item">
+               <span className="mdl-list__item-primary-content">
+                 { i.val().title }
+               </span>
+               <Link className="mdl-list__item-secondary-action" to={"/chat/" + i.val().url}>
+                 <i className="material-icons"> >> </i></Link>
+             </li>
        )
     })
 
     return (
         <div>
-          <h2>Top Room List</h2>
-          <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-            <tbody>{ list }</tbody>
-          </table>
+          <h2>Topics List</h2>
+          <ul className="mdl-list">
+            { list }
+          </ul>
         </div>
     )
   }
