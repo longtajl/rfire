@@ -28,13 +28,13 @@ const Main = () => (
       <Route path="/top" component={Top}/>
     </div>
   </Router>
-)
+);
 
 const Welcome = () => (
   <div>
     <h2>Welcome</h2>
   </div>
-)
+);
 
 ReactDOM.render(<Main />, document.getElementById('content'));
 

@@ -3,8 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import firebase from 'firebase';
 import { firebaseConfig } from '../firebase/config.js';
-import Item from './item.js'
-import { FirebaseApp } from '../index.js'
+import Item from './item.js';
+import { FirebaseApp } from '../index.js';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import TextField from 'material-ui/TextField';
+import {List, ListItem} from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
+import FlatButton from 'material-ui/FlatButton';
 
 export default class Chat extends React.Component {
 
@@ -13,7 +18,7 @@ export default class Chat extends React.Component {
 
     let url = props.match.params.url;
 
-    this.database = FirebaseApp.database().ref("/topics/chat/" + url)
+    this.database = FirebaseApp.database().ref("/chats/" + url)
 
     this.onChangeInputName = this.onChangeInputName.bind(this);
     this.onChangeInputBody = this.onChangeInputBody.bind(this);
@@ -96,44 +101,50 @@ export default class Chat extends React.Component {
   }
 
   render() {
+
     let form = (
         <div className="Form">
           <form onSubmit={this.handleSubmit}>
-            <div className="FormField mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input className="mdl-textfield__input" type="text" id="NameText" onChange={this.onChangeInputName} />
-              <label className="mdl-textfield__label" htmlFor="NameText">Name...</label>
-            </div>
-            <div className="FormField mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <textarea className="mdl-textfield__input" id="NameBody" onChange={this.onChangeInputBody} rows="6" />
-              <label className="mdl-textfield__label" htmlFor="NameBody">Body...</label>
-            </div>
-            <input className="FormButton mdl-button mdl-js-button mdl-button--raised" type="submit" value=" save "></input>
+            <TextField 
+                hintText="Name"
+                fullWidth={true}
+                onChange={this.onChangeInputName} /><br/>
+
+            <TextField 
+                multiLine={true}
+                rows={3}
+                fullWidth={true}
+                onChange={this.onChangeInputBody}
+                hintText="Text....  " /><br/><br/>
+
+             <FlatButton type="submit" label=" Post " fullWidth={true} />
+
           </form>
         </div>
     )
 
-    let list = _.map(this.state.items, (i) => {
-      return <Item item={i} remove={this.removeItem} key={i.key} />;
+    let listItems = _.map(this.state.items, (e, i) => {
+        return (
+            <ListItem primaryText={e.val().name} key={i}
+                secondaryTextLines={5}
+                secondaryText={ e.val().body } />
+        );
     });
 
     return (
-      <div>
-        { form }
-
-        <div className="Snippet-captions">
-          <div className="Snippet-caption"></div>
+        <div>
+            <MuiThemeProvider>
+            { form }
+            </MuiThemeProvider>
+            <MuiThemeProvider>
+            <List>
+                <Subheader>Chat Room</Subheader>
+                { listItems }
+            </List>
+            </MuiThemeProvider>
         </div>
-
-        <div className="List">
-          <ol className="mdl-list">
-            { list }
-          </ol>
-        </div>
-      </div>
     )
   }
 
 }
-
-//ReactDOM.render(<TodoList />, document.getElementById('content'));
 
