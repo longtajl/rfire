@@ -1,12 +1,17 @@
 import _ from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FirebaseApp } from '../index.js'
+import { FirebaseApp } from '../index.js';
 import {
   BrowserRouter as Router,
   Route,
   Link
-} from 'react-router-dom'
+} from 'react-router-dom';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
 
 export default class Top extends React.Component {
 
@@ -18,7 +23,7 @@ export default class Top extends React.Component {
     this.onChangeInputTitle = this.onChangeInputTitle.bind(this);
     this.onChangeInputUrl = this.onChangeInputUrl.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.click = this.click.bind(this);
+    this.chatToPage = this.chatToPage.bind(this);
 
     this.state = {
       inputTitle: "",
@@ -71,45 +76,39 @@ export default class Top extends React.Component {
     })
   }
 
-  click() {
-    console.log("--------------------- ");
+  chatToPage(url) {
+    this.props.history.push('/chat/' + url)
   }
 
   render() {
 
-    let form = ( 
-        <div>
-          <form onSubmit={this.handleSubmit}>
-             <div>
-              <input className="mdl-textfield__input" type="text" id="TitleText" onChange={this.onChangeInputTitle} />
-              <label className="mdl-textfield__label" htmlFor="TitleText">Name...</label>
-            </div>
-            <div className="FormField mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input className="mdl-textfield__input" id="UrlBody" onChange={this.onChangeInputUrl} rows="6" />
-              <label className="mdl-textfield__label" htmlFor="UrlBody">Body...</label>
-            </div>
-            <input className="FormButton mdl-button mdl-js-button mdl-button--raised" type="submit" value=" save "></input>
-          </form>
-        </div> 
-    )
-
-    let list = _.map(this.state.topics, (i) => {
-       return (
-             <tr>
-                 <td className="mdl-data-table__cell--non-numeric">{ i.val().title }</td>
-                 <td><Link to={"/chat/" + i.val().url}>{ i.val().url }</Link></td>
-             </tr>
-       )
-    })
+    let topics = this.state.topics;
+    let size = topics.length * 2;
+    let listItems = _.map(Array.apply(null, Array(size)), (e, i) => {
+        if (i % 2 == 0) {
+          let topic = topics[i/2].val();
+          return (
+                <ListItem primaryText={topic.title} key={i}
+                    onClick={(e) => { this.chatToPage(topic.url) }}/>
+          );
+        } else {
+          return (
+              <Divider inset={false} key={i} />
+          );
+        }
+    });
 
     return (
         <div>
-          <h2>Top Room List</h2>
-          <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-            <tbody>{ list }</tbody>
-          </table>
+          <MuiThemeProvider>
+          <List>
+            <Subheader>Topic List</Subheader>
+            { listItems }
+          </List>
+          </MuiThemeProvider>
         </div>
     )
+
   }
 
 }
