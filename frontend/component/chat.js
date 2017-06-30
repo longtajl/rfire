@@ -5,12 +5,14 @@ import firebase from 'firebase';
 import { firebaseConfig } from '../firebase/config.js';
 import Item from './item.js';
 import { FirebaseApp } from '../index.js';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
-import ChatListItem from './ChatListItem.js'
+import ChatListItem from './chat_list_item.js'
+import LinearProgress from 'material-ui/LinearProgress';
 
 export default class Chat extends React.Component {
 
@@ -80,25 +82,25 @@ export default class Chat extends React.Component {
   }
 
   pushItem(name, body) {
-    this.database.push({
-      name: name, 
-      body: body, 
-      date: new Date().getTime()
-    })
+      this.database.push({
+          name: name, 
+          body: body, 
+          date: new Date().getTime()
+      })
   }
 
   removeItem(key) {
-    if (key.lenght !== 0) {
-      this.database.child(key).remove();
-    }
+      if (key.lenght !== 0) {
+          this.database.child(key).remove();
+      }
   }
 
   onChangeInputName(e) {
-    this.setState({inputName: e.target.value});
+      this.setState({inputName: e.target.value});
   }
 
   onChangeInputBody(e) {
-    this.setState({inputBody: e.target.value});
+      this.setState({inputBody: e.target.value});
   }
 
   render() {
@@ -133,13 +135,18 @@ export default class Chat extends React.Component {
     return (
         <div>
             <MuiThemeProvider>
-            { form }
+                { form }
             </MuiThemeProvider>
+
             <MuiThemeProvider>
-            <List>
-                <Subheader>Chat Room</Subheader>
-                { listItems }
-            </List>
+                <LinearProgress mode="indeterminate" />
+            </MuiThemeProvider>
+
+            <MuiThemeProvider>
+                <List>
+                    <Subheader>Chat Room</Subheader>
+                    { listItems }
+                </List>
             </MuiThemeProvider>
         </div>
     )
