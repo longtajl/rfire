@@ -24,8 +24,7 @@ module.exports = [{
       ]
   },
   plugins: [
-    new CopyWebpackPlugin([
-        { from: 'node_modules/material-design-lite/material.min.js', to: 'material.min.js' } ])
+    new CopyWebpackPlugin([ { from: 'node_modules/material-design-lite/material.min.js', to: 'material.min.js' } ]) 
   ]
 },{
     entry: {
