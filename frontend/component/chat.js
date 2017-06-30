@@ -10,6 +10,7 @@ import TextField from 'material-ui/TextField';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
+import ChatListItem from './ChatListItem.js'
 
 export default class Chat extends React.Component {
 
@@ -125,9 +126,7 @@ export default class Chat extends React.Component {
 
     let listItems = _.map(this.state.items, (e, i) => {
         return (
-            <ListItem primaryText={e.val().name} key={i}
-                secondaryTextLines={5}
-                secondaryText={ e.val().body } />
+            <ChatListItem name={e.val().name} index={i} body={e.val().body} />
         );
     });
 
